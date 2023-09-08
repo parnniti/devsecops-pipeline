@@ -36,7 +36,7 @@ Access to
 
 :clock4: For more detail
 -
-   
+
 See [the wiki page](https://github.com/k-tamura/easybuggy/wiki).
 
 :clock4: Demo
@@ -63,8 +63,8 @@ This demo shows: Start up -> Infinite Loop -> LDAP Injection -> UnsatisfiedLinkE
   * JVM Crash
   * Network Socket Leak
   * Database Connection Leak
-  * File Descriptor Leak 
-  * Thread Leak 
+  * File Descriptor Leak
+  * Thread Leak
   * Mojibake
   * Integer Overflow
   * Round Off Error
@@ -107,7 +107,7 @@ This demo shows: Start up -> Infinite Loop -> LDAP Injection -> UnsatisfiedLinkE
   * FactoryConfigurationError
   * GenericSignatureFormatError
   * NoClassDefFoundError
-  * OutOfMemoryError (Java heap space) 
+  * OutOfMemoryError (Java heap space)
   * OutOfMemoryError (Requested array size exceeds VM limit)
   * OutOfMemoryError (unable to create new native thread)
   * OutOfMemoryError (GC overhead limit exceeded)
