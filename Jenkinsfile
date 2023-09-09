@@ -21,6 +21,7 @@ pipeline {
         }
       }
     }
+
     stage('RunSCAAnalysisUsingSnyk') {
       steps {
         withCredentials([string(credentialsId: 'SNYK_TOKEN', variable: 'SNYK_TOKEN')]) {
@@ -28,19 +29,30 @@ pipeline {
         }
       }
     }
+
     stage('Build') {
       steps {
         script {
-          app_image = docker.build('devops')
+          app_image = docker.build('asg')
         }
       }
     }
+
     stage('Push') {
       steps {
         script {
           docker.withRegistry(DOCKER_REGISTRY, DOCKER_CREDENTIALS) {
             app_image.push("latest")
           }
+        }
+      }
+    }
+
+    stage('Kubernetes Deployment of ASG Bugg Web Application') {
+      steps {
+        withKubeConfig([credentialsId: 'k3s-config']) {
+          sh "export IMAGE=${app_image.ImageName()}"
+          sh './scripts/deploy.sh'
         }
       }
     }
