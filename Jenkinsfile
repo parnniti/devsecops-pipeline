@@ -39,7 +39,7 @@ pipeline {
       steps {
         script {
           docker.withRegistry(DOCKER_REGISTRY, DOCKER_CREDENTIALS) {
-            app.push("latest")
+            app_image.push("latest")
           }
         }
       }
