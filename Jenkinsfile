@@ -9,6 +9,8 @@ pipeline {
 
     DOCKER_REGISTRY = 'https://570943728123.dkr.ecr.ap-southeast-1.amazonaws.com'
     DOCKER_CREDENTIALS = 'ecr:ap-southeast-1:aws-credentials'
+
+    KUBECONFIG = 'k3s-config'
   }
   tools {
     maven 'maven_3.5.2'
@@ -50,7 +52,7 @@ pipeline {
 
     stage('Kubernetes Deployment of ASG Bugg Web Application') {
       steps {
-        withKubeConfig([credentialsId: 'k3s-config']) {
+        withKubeConfig([credentialsId: KUBECONFIG]) {
           sh "export IMAGE=${app_image.ImageName()}"
           sh './scripts/deploy.sh'
         }
