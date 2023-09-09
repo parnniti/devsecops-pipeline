@@ -1,5 +1,8 @@
 #!/bin/bash
 
 export IMAGE=$(echo $1 | awk -F https:// '{ print $NF }')
-kubectl delete all --all -n devsecops
-envsubst < deployment.yaml | kubectl -n devsecops apply -f -
+NAMESPACE=devsecops
+
+kubectl create ns $NAMESPACE 2> /dev/null || true
+kubectl delete all --all -n $NAMESPACE
+envsubst < deployment.yaml | kubectl -n $NAMESPACE apply -f -
