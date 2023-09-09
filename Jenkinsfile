@@ -7,7 +7,7 @@ pipeline {
     SONAR_ORG_KEY = 'parnwebapp'
     SONAR_HOST = 'https://sonarcloud.io'
 
-    DOCKER_REGISTRY = 'https://570943728123.dkr.ecr.ap-southeast-1.amazonaws.com'
+    DOCKER_REGISTRY = 'https://570943728123.dkr.ecr.ap-southeast-1.amazonaws.com/devops'
     DOCKER_CREDENTIALS = 'ecr:ap-southeast-1:aws-credentials'
   }
   tools {
