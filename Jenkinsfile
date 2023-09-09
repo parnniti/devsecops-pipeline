@@ -54,7 +54,7 @@ pipeline {
       steps {
         sh 'chmod +x ./scripts/*'
         withKubeConfig([credentialsId: KUBECONFIG]) {
-          sh "./scripts/deploy.sh ${app_image.imageName()}"
+          sh "./scripts/deploy.sh $DOCKER_REGISTRY/${app_image.imageName()}"
         }
       }
     }
