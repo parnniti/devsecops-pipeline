@@ -54,7 +54,7 @@ pipeline {
       steps {
         withKubeConfig([credentialsId: KUBECONFIG]) {
           sh "export IMAGE=${app_image.imageName()}"
-          sh 'chmod +x /scripts/*'
+          sh 'chmod +x ./scripts/*'
           sh './scripts/deploy.sh'
         }
       }
