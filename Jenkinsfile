@@ -7,7 +7,7 @@ pipeline {
     SONAR_ORG_KEY = 'parnwebapp'
     SONAR_HOST = 'https://sonarcloud.io'
 
-    DOCKER_REGISTRY = ''
+    DOCKER_REGISTRY = 'https://registry.hub.docker.com/v2/'
     DOCKER_CREDENTIALS = 'dockerhub'
   }
   tools {
