@@ -52,9 +52,9 @@ pipeline {
 
     stage('Kubernetes Deployment of ASG Bugg Web Application') {
       steps {
+        sh "export IMAGE=${app_image.imageName()}"
+        sh 'chmod +x ./scripts/*'
         withKubeConfig([credentialsId: KUBECONFIG]) {
-          sh "export IMAGE=${app_image.imageName()}"
-          sh 'chmod +x ./scripts/*'
           sh './scripts/deploy.sh'
         }
       }
