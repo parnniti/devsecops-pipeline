@@ -29,8 +29,6 @@ pipeline {
       steps {
         script {
           app_image = docker.build('asg')
-          println app_image
-          app_image.getClass()
         }
       }
     }
