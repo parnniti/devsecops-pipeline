@@ -4,7 +4,7 @@
 
     <repositories>
       <repository>
-        <id>maven-group</id>
+        <id>maven-public</id>
         <url>http://wsl:30081/repository/maven-public/</url>
       </repository>
     </repositories>
