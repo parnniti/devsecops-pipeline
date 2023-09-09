@@ -53,7 +53,7 @@ pipeline {
     stage('Kubernetes Deployment of ASG Bugg Web Application') {
       steps {
         withKubeConfig([credentialsId: KUBECONFIG]) {
-          sh "export IMAGE=${app_image.ImageName()}"
+          sh "export IMAGE=${app_image.imageName()}"
           sh './scripts/deploy.sh'
         }
       }
