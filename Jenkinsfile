@@ -7,8 +7,8 @@ pipeline {
     SONAR_ORG_KEY = 'parnwebapp'
     SONAR_HOST = 'https://sonarcloud.io'
 
-    DOCKER_REGISTRY = 'https://registry.hub.docker.com/v2/'
-    DOCKER_CREDENTIALS = 'dockerhub'
+    DOCKER_REGISTRY = '570943728123.dkr.ecr.ap-southeast-1.amazonaws.com'
+    DOCKER_CREDENTIALS = 'ecr:ap-southeast-1:aws-credentials'
   }
   tools {
     maven 'maven_3.5.2'
