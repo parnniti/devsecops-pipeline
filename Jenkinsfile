@@ -6,6 +6,9 @@ pipeline {
     SONAR_PROJECT_KEY = 'parnwebapp'
     SONAR_ORG_KEY = 'parnwebapp'
     SONAR_HOST = 'https://sonarcloud.io'
+
+    DOCKER_REGISTRY = 'https://registry.hub.docker.com/v2/'
+    DOCKER_CREDENTIALS = 'dockerhub'
   }
   tools {
     maven 'maven_3.5.2'
@@ -29,6 +32,15 @@ pipeline {
       steps {
         script {
           app_image = docker.build('asg')
+        }
+      }
+    }
+    stage('Push') {
+      steps {
+        script {
+          docker.withRegistry(DOCKER_REGISTRY, DOCKER_CREDENTIALS) {
+            app.push("latest")
+          }
         }
       }
     }
