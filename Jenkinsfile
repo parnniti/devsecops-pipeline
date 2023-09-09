@@ -7,7 +7,7 @@ pipeline {
     SONAR_ORG_KEY = 'parnwebapp'
     SONAR_HOST = 'https://sonarcloud.io'
 
-    DOCKER_REGISTRY = 'https://570943728123.dkr.ecr.ap-southeast-1.amazonaws.com/devops'
+    DOCKER_REGISTRY = 'https://570943728123.dkr.ecr.ap-southeast-1.amazonaws.com'
     DOCKER_CREDENTIALS = 'ecr:ap-southeast-1:aws-credentials'
   }
   tools {
@@ -31,7 +31,7 @@ pipeline {
     stage('Build') {
       steps {
         script {
-          app_image = docker.build('asg')
+          app_image = docker.build('devops')
         }
       }
     }
