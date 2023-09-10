@@ -8,7 +8,7 @@ pipeline {
     SONAR_HOST = 'https://sonarcloud.io'
 
     DOCKER_REGISTRY = 'https://570943728123.dkr.ecr.ap-southeast-1.amazonaws.com'
-    DOCKER_CREDENTIALS = 'ecr:ap-southeast-1:aws-credentials'
+    AWS_CREDENTIALS = 'aws-credentials'
 
     KUBECONFIG = 'k3s-config'
   }
@@ -40,24 +40,31 @@ pipeline {
     //   }
     // }
 
-    stage('Push') {
-      steps {
-        script {
-          docker.withRegistry(DOCKER_REGISTRY, DOCKER_CREDENTIALS) {
-            sh 'ls ~/.docker/config.json'
-            // app_image.push("latest")
-          }
-        }
-      }
-    }
-
-    // stage('Kubernetes Deployment of ASG Bugg Web Application') {
+    // stage('Push') {
     //   steps {
-    //     sh 'chmod +x ./scripts/*'
-    //     withKubeConfig([credentialsId: KUBECONFIG]) {
-    //       sh "./scripts/deploy.sh $DOCKER_REGISTRY/${app_image.imageName()}"
+    //     script {
+    //       docker.withRegistry(DOCKER_REGISTRY, "ecr:ap-southeast-1:$AWS_CREDENTIALS") {
+    //         app_image.push("latest")    
+    //       }
     //     }
     //   }
     // }
+
+    stage('Kubernetes Deployment of ASG Bugg Web Application') {
+      steps {
+        withCredentials([[
+          $class: 'AmazonWebServicesCredentialsBinding',
+          credentialsId: AWS_CREDENTIALS,
+          accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+          secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+        ]]) {
+          sh 'aws ecr get-login-password --region ap-southeast-1'
+        }
+        // sh 'chmod +x ./scripts/*'
+        // withKubeConfig([credentialsId: KUBECONFIG]) {
+        //   sh "./scripts/deploy.sh $DOCKER_REGISTRY/${app_image.imageName()}"
+        // }
+      }
+    }
   }
 }
