@@ -12,6 +12,8 @@ spec:
       labels:
         app: asgbuggy
     spec:
+      imagePullSecrets:
+      - name: aws-ecr
       containers:
       - name: asgbuggy
         image: $IMAGE

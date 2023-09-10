@@ -53,7 +53,7 @@ pipeline {
 
     stage('Kubernetes Deployment of ASG Bugg Web Application') {
       steps {
-        // sh 'chmod +x ./scripts/*'
+        sh 'chmod +x ./scripts/*'
         withCredentials([[
           $class: 'AmazonWebServicesCredentialsBinding',
           credentialsId: AWS_CREDENTIALS,
@@ -67,8 +67,8 @@ pipeline {
               --docker-username=AWS \
               --docker-password=\$(aws ecr get-login-password --region ap-southeast-1) || true
             """
+            sh "./scripts/deploy.sh $DOCKER_REGISTRY/${app_image.imageName()}"
           }
-          // sh "./scripts/deploy.sh $DOCKER_REGISTRY/${app_image.imageName()}"
         }
       }
     }
