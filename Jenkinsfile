@@ -60,7 +60,6 @@ pipeline {
           secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
         ]]) {
           sh """
-            set +x
             kubectl -n $APP_NAMESPACE create secret docker-registry aws-ecr \
             --docker-server=$DOCKER_REGISTRY \
             --docker-username=AWS \
