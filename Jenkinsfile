@@ -51,37 +51,37 @@ pipeline {
     //   }
     // }
 
-    // stage('Kubernetes Deployment of ASG Bugg Web Application') {
-    //   steps {
-    //     sh 'chmod +x ./scripts/*'
-    //     sh "kubectl create ns $APP_NAMESPACE || true"
-    //     withCredentials([[
-    //       $class: 'AmazonWebServicesCredentialsBinding',
-    //       credentialsId: AWS_CREDENTIALS,
-    //       accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-    //       secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
-    //     ]]) {
-    //       withKubeConfig([credentialsId: KUBECONFIG]) {
-    //         sh """set +x
-    //           kubectl -n $APP_NAMESPACE create secret docker-registry aws-ecr \
-    //           --docker-server=$DOCKER_REGISTRY \
-    //           --docker-username=AWS \
-    //           --docker-password=\$(aws ecr get-login-password --region ap-southeast-1) || true
-    //         """
-    //         sh "./scripts/deploy.sh $DOCKER_REGISTRY/${app_image.imageName()}"
-    //       }
-    //     }
-    //   }
-    // }
+    stage('Kubernetes Deployment of ASG Bugg Web Application') {
+      steps {
+        sh 'chmod +x ./scripts/*'
+        sh 'kubectl create ns $APP_NAMESPACE || true'
+        withCredentials([[
+          $class: 'AmazonWebServicesCredentialsBinding',
+          credentialsId: AWS_CREDENTIALS,
+          accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+          secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+        ]]) {
+          withKubeConfig([credentialsId: KUBECONFIG]) {
+            sh '''set +x
+              kubectl -n $APP_NAMESPACE create secret docker-registry aws-ecr \
+              --docker-server=$DOCKER_REGISTRY \
+              --docker-username=AWS \
+              --docker-password=$(aws ecr get-login-password --region ap-southeast-1) || true
+            '''
+            sh './scripts/deploy.sh $DOCKER_REGISTRY/${app_image.imageName()}'
+          }
+        }
+      }
+    }
 
     stage('RunDASTUsingZAP') {
       steps {
         sh 'echo $APP_NAMESPACE'
         // withKubeConfig([credentialsId: 'kubelogin']) {
-        //   sh("zap.sh -cmd -quickurl http://$(kubectl get services/asgbuggy --namespace=devsecops -o json| jq -r '.status.loadBalancer.ingress[] | .hostname') -quickprogress -quickout ${WORKSPACE}/zap_report.html")
+        //   sh('zap.sh -cmd -quickurl http://$(kubectl get services/asgbuggy --namespace=devsecops -o json| jq -r ".status.loadBalancer.ingress[] | .hostname") -quickprogress -quickout ${WORKSPACE}/zap_report.html')
         //   archiveArtifacts artifacts: 'zap_report.html'
         // }
-	    }
+        }
     }
   }
 }
