@@ -60,10 +60,12 @@ pipeline {
           secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
         ]]) {
           sh """
+            set +x
             kubectl -n $APP_NAMESPACE create secret docker-registry aws-credentials \
             --docker-username=AWS \
             --docker-password=\$(aws ecr get-login-password --region ap-southeast-1) \
             2> /dev/null || true
+            set -x
           """
         }
         // sh 'chmod +x ./scripts/*'
