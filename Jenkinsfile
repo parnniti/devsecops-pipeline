@@ -62,7 +62,7 @@ pipeline {
           sh """
             kubectl -n $APP_NAMESPACE create secret docker-registry aws-credentials \
             --docker-username=AWS \
-            --docker-password=$(aws ecr get-login-password --region ap-southeast-1) \
+            --docker-password=\$(aws ecr get-login-password --region ap-southeast-1) \
             2> /dev/null || true
           """
         }
