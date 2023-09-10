@@ -53,23 +53,23 @@ pipeline {
 
     stage('Kubernetes Deployment of ASG Bugg Web Application') {
       steps {
-        withCredentials([[
-          $class: 'AmazonWebServicesCredentialsBinding',
-          credentialsId: AWS_CREDENTIALS,
-          accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-          secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
-        ]]) {
-          sh """
-            kubectl -n $APP_NAMESPACE create secret docker-registry aws-ecr \
-            --docker-server=$DOCKER_REGISTRY \
-            --docker-username=AWS \
-            --docker-password=\$(aws ecr get-login-password --region ap-southeast-1) || true
-          """
-        }
         // sh 'chmod +x ./scripts/*'
-        // withKubeConfig([credentialsId: KUBECONFIG]) {
-        //   sh "./scripts/deploy.sh $DOCKER_REGISTRY/${app_image.imageName()}"
-        // }
+        withKubeConfig([credentialsId: KUBECONFIG]) {
+          withCredentials([[
+            $class: 'AmazonWebServicesCredentialsBinding',
+            credentialsId: AWS_CREDENTIALS,
+            accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+            secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+          ]]) {
+            sh """
+              kubectl -n $APP_NAMESPACE create secret docker-registry aws-ecr \
+              --docker-server=$DOCKER_REGISTRY \
+              --docker-username=AWS \
+              --docker-password=\$(aws ecr get-login-password --region ap-southeast-1) || true
+            """
+          }
+          // sh "./scripts/deploy.sh $DOCKER_REGISTRY/${app_image.imageName()}"
+        }
       }
     }
   }
