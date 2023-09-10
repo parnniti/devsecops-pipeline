@@ -45,7 +45,7 @@ pipeline {
       steps {
         script {
           docker.withRegistry(DOCKER_REGISTRY, "ecr:ap-southeast-1:$AWS_CREDENTIALS") {
-            app_image.push("latest")    
+            app_image.push("latest")
           }
         }
       }
