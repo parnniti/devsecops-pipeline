@@ -54,6 +54,7 @@ pipeline {
     stage('Kubernetes Deployment of ASG Bugg Web Application') {
       steps {
         sh 'chmod +x ./scripts/*'
+        sh "kubectl create ns $APP_NAMESPACE || true"
         withCredentials([[
           $class: 'AmazonWebServicesCredentialsBinding',
           credentialsId: AWS_CREDENTIALS,
