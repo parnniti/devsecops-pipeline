@@ -54,13 +54,13 @@ pipeline {
     stage('Kubernetes Deployment of ASG Bugg Web Application') {
       steps {
         // sh 'chmod +x ./scripts/*'
-        withKubeConfig([credentialsId: KUBECONFIG]) {
-          withCredentials([[
-            $class: 'AmazonWebServicesCredentialsBinding',
-            credentialsId: AWS_CREDENTIALS,
-            accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-            secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
-          ]]) {
+        withCredentials([[
+          $class: 'AmazonWebServicesCredentialsBinding',
+          credentialsId: AWS_CREDENTIALS,
+          accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+          secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+        ]]) {
+          withKubeConfig([credentialsId: KUBECONFIG]) {
             sh """
               kubectl -n $APP_NAMESPACE create secret docker-registry aws-ecr \
               --docker-server=$DOCKER_REGISTRY \
