@@ -11,6 +11,7 @@ pipeline {
     AWS_CREDENTIALS = 'aws-credentials'
 
     KUBECONFIG = 'k3s-config'
+    APP_NAMESPACE = 'devsecops'
   }
   tools {
     maven 'maven_3.5.2'
@@ -58,7 +59,12 @@ pipeline {
           accessKeyVariable: 'AWS_ACCESS_KEY_ID',
           secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
         ]]) {
-          sh 'aws ecr get-login-password --region ap-southeast-1'
+          sh """
+            kubectl -n $APP_NAMESPACE create secret docker-registry aws-credentials \
+            --docker-username=AWS \
+            --docker-password=$(aws ecr get-login-password --region ap-southeast-1) \
+            2> /dev/null || true
+          """
         }
         // sh 'chmod +x ./scripts/*'
         // withKubeConfig([credentialsId: KUBECONFIG]) {
