@@ -61,7 +61,8 @@ pipeline {
           secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
         ]]) {
           withKubeConfig([credentialsId: KUBECONFIG]) {
-            sh """kubectl -n $APP_NAMESPACE create secret docker-registry aws-ecr \
+            sh """set +x
+              kubectl -n $APP_NAMESPACE create secret docker-registry aws-ecr \
               --docker-server=$DOCKER_REGISTRY \
               --docker-username=AWS \
               --docker-password=\$(aws ecr get-login-password --region ap-southeast-1) || true
